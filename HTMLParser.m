@@ -52,13 +52,11 @@
 		if ([string length] > 0)
 		{
 			CFStringEncoding cfenc = CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding);
-			CFStringRef cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc);
-			const char *enc = CFStringGetCStringPtr(cfencstr, 0);
-			// _doc = htmlParseDoc((xmlChar*)[string UTF8String], enc);
+            NSString *enc = (__bridge NSString *) CFStringConvertEncodingToIANACharSetName(cfenc);
 			int optionsHtml = HTML_PARSE_RECOVER;
 			optionsHtml = optionsHtml | HTML_PARSE_NOERROR; //Uncomment this to see HTML errors
 			optionsHtml = optionsHtml | HTML_PARSE_NOWARNING;
-			_doc = htmlReadDoc ((xmlChar*)[string UTF8String], NULL, enc, optionsHtml);
+			_doc = htmlReadDoc ((xmlChar*)[string UTF8String], NULL, [enc UTF8String], optionsHtml);
 		}
 		else 
 		{
@@ -80,13 +78,12 @@
 		if (data)
 		{
 			CFStringEncoding cfenc = CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding);
-			CFStringRef cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc);
-			const char *enc = CFStringGetCStringPtr(cfencstr, 0);
+			NSString *enc = (__bridge NSString *) CFStringConvertEncodingToIANACharSetName(cfenc);
 			//_doc = htmlParseDoc((xmlChar*)[data bytes], enc);
 			
 			_doc = htmlReadDoc((xmlChar*)[data bytes],
 							 "",
-							enc,
+							[enc UTF8String],
 							XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
 		}
 		else
